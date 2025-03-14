@@ -12,6 +12,11 @@ namespace PALITODECOCO
 
         private void Form1_Load(object sender, EventArgs e)
         {
+ 
+        
+            dataGridView1.ReadOnly = true;  // Hace que toda la tabla sea de solo lectura
+            dataGridView1.AllowUserToAddRows = false; // Evita que se agreguen filas manualmente
+        
 
         }
 
@@ -57,15 +62,22 @@ namespace PALITODECOCO
 
         private void BTN_ELIMINAR_Click(object sender, EventArgs e)
         {
-            // Verifica si hay una fila seleccionada en el DataGridView
             if (dataGridView1.SelectedRows.Count > 0)
             {
-                int indice = dataGridView1.SelectedRows[0].Index; // Obtiene el índice
-                empleados.RemoveAt(indice); // Elimina el empleado de la lista
-
-                MessageBox.Show("Empleado borrado de forma correcta", Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
-                RefrescarLista(); // Actualiza el DataGridView
+                int indice = dataGridView1.SelectedRows[0].Index;
+                if (indice >= 0 && indice < empleados.Count)
+                {
+                    empleados.RemoveAt(indice);
+                    MessageBox.Show("Empleado eliminado correctamente.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    RefrescarLista();
+                }
             }
+            else
+            {
+                MessageBox.Show("Seleccione un empleado para eliminar.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            
+
+        }
         }
         private void RefrescarLista()
         {
@@ -75,13 +87,11 @@ namespace PALITODECOCO
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            dataGridView1.DataSource = null;
-            dataGridView1.DataSource = empleados;
+     
 
             // Evitar edición en la tabla
             dataGridView1.ReadOnly = true;
-            dataGridView1.AllowUserToAddRows = false;
-            dataGridView1.AllowUserToDeleteRows = false;
+       
         }
     }
 
